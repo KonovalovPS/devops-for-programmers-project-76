@@ -1,0 +1,14 @@
+---
+
+- name: Deploy
+  hosts: all
+  tasks:
+    - name: Run Redmine container
+      community.docker.docker_container:
+        image: redmine
+        name: myredmine
+        state: started
+        restart: true
+        ports:
+          80:3000
+      become: true
