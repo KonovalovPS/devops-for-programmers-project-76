@@ -5,10 +5,17 @@
   tasks:
     - name: Run Redmine container
       community.docker.docker_container:
-        image: redmine
+        image: pavel123321/redmine
+        platform: linux/amd64
         name: myredmine
         state: started
         restart: true
         ports:
           80:3000
+        env:
+          REDMINE_DB_POSTGRES: "{{ REDMINE_DB_POSTGRES }}"
+          REDMINE_DB_USERNAME: "{{ REDMINE_DB_USERNAME }}"
+          REDMINE_DB_PASSWORD: "{{ REDMINE_DB_PASSWORD }}"
+          REDMINE_DB_PORT: "{{ REDMINE_DB_PORT }}"
+          REDMINE_DB_DATABASE: "{{ REDMINE_DB_DATABASE }}"
       become: true
