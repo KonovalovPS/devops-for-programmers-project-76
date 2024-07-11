@@ -7,3 +7,6 @@ deploy:
 
 build-push:
 	docker buildx build --platform linux/amd64,linux/arm64 -t pavel123321/redmine:latest --push .
+
+add-monitoring:
+	ansible-playbook playbook_monitoring.yml -i inventory.ini --ask-vault-pass -vv
