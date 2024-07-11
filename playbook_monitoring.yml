@@ -1,9 +1,4 @@
 - hosts: webservers
-  tasks:
-    - name: Import the Datadog Agent role from the Datadog collection
-      become: true
-      import_role:
-        name: datadog.dd.agent
   roles:
     - { role: datadog.datadog, become: yes }
 
