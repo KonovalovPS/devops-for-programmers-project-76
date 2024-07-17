@@ -2,7 +2,10 @@
 
 - name: Setup
   hosts: all
+  tags: setup
   tasks:
+    # to solve error "error: externally-managed-environment" when installing via pip3
+    # https://www.jeffgeerling.com/blog/2023/how-solve-error-externally-managed-environment-when-installing-pip3
     - name: Ignore PEP 668 because it's silly.
       ansible.builtin.file:
         path: /usr/lib/python3.12/EXTERNALLY-MANAGED
@@ -19,3 +22,39 @@
     - name: Install docker python lib
       pip:
         name: docker
+
+- name: Deploy
+  hosts: all
+  tags: deploy
+  tasks:
+    - name: Run Redmine container
+      community.docker.docker_container:
+        image: redmine
+        platform: linux/amd64
+        name: myredmine
+        state: started
+        restart: true
+        ports:
+          "{{ APP_PORT }}:3000"
+        env:
+          REDMINE_DB_POSTGRES: "{{ REDMINE_DB_POSTGRES }}"
+          REDMINE_DB_USERNAME: "{{ REDMINE_DB_USERNAME }}"
+          REDMINE_DB_PASSWORD: "{{ REDMINE_DB_PASSWORD }}"
+          REDMINE_DB_PORT: "{{ REDMINE_DB_PORT }}"
+          REDMINE_DB_DATABASE: "{{ REDMINE_DB_DATABASE }}"
+      become: true
+
+- hosts: webservers
+  roles:
+    - { role: datadog.datadog, become: yes }
+  tags: datadog
+
+  vars:
+    datadog_api_key: "{{ DATADOG_API_KEY }}"
+    datadog_checks:
+      http_check:
+        instances:
+          - name: http_check_{{ inventory_hostname }}
+            url: http://localhost:{{ APP_PORT }}
+            timeout: 15
+            min_collection_interval: 30    

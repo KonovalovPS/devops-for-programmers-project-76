@@ -1,12 +1,8 @@
 setup:
-	ansible-playbook playbook.yml -i inventory.ini --ask-vault-pass
-
+	ansible-playbook playbook.yml --tags setup -i inventory.ini --vault-password-file ansible_vault_password
 
 deploy:
-	ansible-playbook playbook_deploy.yml -i inventory.ini --ask-vault-pass
-
-build-push:
-	docker buildx build --platform linux/amd64,linux/arm64 -t pavel123321/redmine:latest --push .
+	ansible-playbook playbook.yml --tags deploy -i inventory.ini --vault-password-file ansible_vault_password
 
 add-monitoring:
-	ansible-playbook playbook_monitoring.yml -i inventory.ini --ask-vault-pass -vv
+	ansible-playbook playbook.yml --tags datadog -i inventory.ini --vault-password-file ansible_vault_password

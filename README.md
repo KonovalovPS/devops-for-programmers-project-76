@@ -2,9 +2,12 @@
 [![Actions Status](https://github.com/KonovalovPS/devops-for-programmers-project-76/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/KonovalovPS/devops-for-programmers-project-76/actions)
 
 ### Requirements
-- docker
-- docker compose V2
+
+на локальной машине:
 - make
+
+образ ОС ubuntu на ВМ с предустановленными:
+- docker
 
 ### Команды
 
