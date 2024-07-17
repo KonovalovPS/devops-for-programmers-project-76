@@ -26,6 +26,9 @@
 - name: Deploy
   hosts: all
   tags: deploy
+  vars_files:
+    - ./group_vars/webservers/common.yml
+    - ./group_vars/webservers/vault.yml
   tasks:
     - name: Run Redmine container
       community.docker.docker_container:
