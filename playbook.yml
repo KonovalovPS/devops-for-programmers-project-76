@@ -28,7 +28,7 @@
   tags: deploy
   vars_files:
     - ./group_vars/webservers/common.yml
-    - ./group_vars/webservers/vault.yml
+    # - ./group_vars/webservers/vault.yml
   tasks:
     - name: Run Redmine container
       community.docker.docker_container:
@@ -51,6 +51,9 @@
   roles:
     - { role: datadog.datadog, become: yes }
   tags: datadog
+  vars_files:
+    - ./group_vars/webservers/common.yml
+    # - ./group_vars/webservers/vault.yml
 
   vars:
     datadog_api_key: "{{ DATADOG_API_KEY }}"
